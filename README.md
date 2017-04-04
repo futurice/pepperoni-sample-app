@@ -15,6 +15,10 @@ React Native Starter Kit is a part of [Pepperoni](http://getpepperoni.com), a fr
 
 To build your own app on top of the Pepperoni Starter Kit, you will need to create a new repository and mirror the [Pepperoni repository](https://github.com/futurice/pepperoni-app-kit), you can  follow [these instructions](https://help.github.com/articles/duplicating-a-repository/) about how to mirror a repository.
 
+### Step 2: Change the app name
+
+By default, the app name is **Pepperoni App Template**, so in order to give a name to your application, just run the script `./support/rename.sh YourAppName`. Once the script is executed you will need to change the title of the app in the navigation bar, simply go to `src/navigator/Navigation.js` and search for *"Pepperoni App Template"* and replace that title with your app name.
+
 
 ### Other useful information
 

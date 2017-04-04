@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import {AppRegistry, BackAndroid} from 'react-native';
 import {NavigationActions} from 'react-navigation';
 
-class PepperoniAppTemplate extends Component {
+class LunchWheel extends Component {
   componentWillMount() {
     BackAndroid.addEventListener('hardwareBackPress', this.navigateBack);
   }
@@ -34,4 +34,4 @@ class PepperoniAppTemplate extends Component {
   }
 }
 
-AppRegistry.registerComponent('PepperoniAppTemplate', () => PepperoniAppTemplate);
+AppRegistry.registerComponent('LunchWheel', () => LunchWheel);
