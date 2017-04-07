@@ -1,12 +1,12 @@
 import {Platform} from 'react-native';
 import {TabNavigator, StackNavigator} from 'react-navigation';
 import * as theme from '../../utils/theme';
-import CounterViewContainer from '../counter/CounterViewContainer';
+import OfficeViewContainer from '../office/OfficeViewContainer';
 import AboutViewContainer from '../about/AboutViewContainer';
 
 // TabNavigator is nested inside StackNavigator
 export const MainScreenNavigator = TabNavigator({
-  Counter: {screen: CounterViewContainer},
+  Office: {screen: OfficeViewContainer},
   About: {screen: AboutViewContainer}
 },{
   tabBarOptions: {

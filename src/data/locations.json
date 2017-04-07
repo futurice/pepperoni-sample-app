@@ -1,0 +1,50 @@
+[
+  {
+    "city": "Berlin",
+    "country": "Germany",
+    "address": "Schützenstraße 6, 10117 Berlin, Germany",
+    "latitude": 52.508725,
+    "longitude": 13.391943,
+    "picture": "https://c1.staticflickr.com/4/3874/14798621115_c161edb240_b.jpg"
+  },
+  {
+    "city": "Helsinki",
+    "country": "Finland",
+    "address": "Annankatu 34B, 00100 Helsinki, Finland",
+    "latitude": 60.168738,
+    "longitude": 24.934115,
+    "picture": "https://c1.staticflickr.com/1/561/19410642666_224d400c4e_b.jpg"
+  },
+  {
+    "city": "London",
+    "country": "UK",
+    "address": "26-28 Underwood St, London N1 7JQ",
+    "latitude": 51.530245,
+    "longitude": -0.091266,
+    "picture": "https://c1.staticflickr.com/1/677/22173565741_20b005ff9c_k.jpg"
+  },
+  {
+    "city": "Munich",
+    "country": "Germany",
+    "address": "Rosa-Bavarese-Straße 3, 80639 München, Germany",
+    "latitude": 48.146936,
+    "longitude": 11.502834,
+    "picture": "https://c1.staticflickr.com/3/2934/14519047033_a0ff241d00_b.jpg"
+  },
+  {
+    "city": "Stockholm",
+    "country": "Sweden",
+    "address": "Drottninggatan 71C, 111 36 Stockholm, Sweden",
+    "latitude": 59.336291,
+    "longitude": 18.058796,
+    "picture": "https://c1.staticflickr.com/2/1567/24217171171_8f48ba57b8_b.jpg"
+  },
+  {
+    "city": "Tampere",
+    "country": "Finland",
+    "address": "Kuninkaankatu 21, 33210 Tampere, Finland",
+    "latitude": 61.498611,
+    "longitude": 23.757001,
+    "picture": "https://c1.staticflickr.com/9/8538/8613215024_47f3a346f6_b.jpg"
+  }
+]
