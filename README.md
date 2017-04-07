@@ -20,6 +20,8 @@ To build your own app on top of the Pepperoni Starter Kit, you will need to crea
 
 By default, the app name is **Pepperoni App Template**, so in order to give a name to your application, just run the script `./support/rename.sh YourAppName`. Once the script is executed you will need to change the title of the app in the navigation bar, simply go to `src/navigator/Navigation.js` and search for *"Pepperoni App Template"* and replace that title with your app name.
 
+In our case, our app name is **Lunch Wheel**, so we run the script like: `./support/rename.sh LunchWheel`.
+
 ### Step 3: Adding your app icons
 
 **On Android**: add the different sizes of your icons to the folders `android/app/src/main/res/mipmap-WHATEVERdpi` and replace the current `ic_launcher.png` with yours. 
@@ -29,6 +31,12 @@ By default, the app name is **Pepperoni App Template**, so in order to give a na
 Tap on `Images.xcassets/AppIcon` to change the app icons with different sizes for the different devices. 
 [Here](https://guides.codepath.com/ios/Adding-Image-Assets) there is an example about how you can import the assests and how to change the icons. 
 To generate different icon sizes you can have a look at some tools like [Angry Marmot](http://icon.angrymarmot.org) or [Make App Icon](http://makeappicon.com).
+
+### Step 4: Develop your app
+
+In this sample app we are going to develop a small app about where to go to have lunch around one of our offices at Futurice (Helsinki, Tampere, Berlin, London, Stockholm and Munich).
+We will use [Foursquare API](https://developer.foursquare.com/docs/explore) to retrieve the information about the places around the offices.
+You can check the commits in order to follow all the changes made in order to create our app. Happy coding! :-)
 
 ### Other useful information
 
