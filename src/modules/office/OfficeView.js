@@ -7,7 +7,8 @@ import {
   ListView,
   Platform,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
 import * as theme from '../../utils/theme';
 import Button from '../../components/Button';
@@ -20,7 +21,7 @@ const window = Dimensions.get('window');
 const titleTab = 'Where to eat';
 
 class OfficeView extends Component {
-  static displayName = 'CounterView';
+  static displayName = 'OfficeView';
 
   static navigationOptions = {
     title: titleTab,
@@ -33,8 +34,11 @@ class OfficeView extends Component {
 
   static propTypes = {
     position: PropTypes.number.isRequired,
+    loading: PropTypes.bool.isRequired,
+    office: PropTypes.object.isRequired,
     officeStateActions: PropTypes.shape({
-      changePosition: PropTypes.func.isRequired
+      changePosition: PropTypes.func.isRequired,
+      selectOffice: PropTypes.func.isRequired
     }).isRequired,
     navigate: PropTypes.func.isRequired
   };
@@ -52,8 +56,12 @@ class OfficeView extends Component {
     this.props.officeStateActions.changePosition(position);
   }
 
+  selectOffice = (office) => {
+    console.log('Selected office: ', office);
+    this.props.officeStateActions.selectOffice(office);
+  }
+
   renderRow = (rowData, section, index) => {
-    console.log('index', index);
     // Show pageIndicator and button for Android on the row because the function
     // 'onChangeVisibleRows' does not work for Android
     let androidView = (Platform.OS === 'android')
@@ -65,13 +73,13 @@ class OfficeView extends Component {
               text="What's for lunch?"
               buttonStyle={theme.buttons.primary}
               textStyle={theme.fonts.primary}
-              action={() => 'TODO'} />
+              action={() => this.selectOffice(offices[index])} />
         </View>)
       : (<View/>);
 
     return (
       <View style={styles.cityCard}>
-        <TouchableOpacity onPress={() => 'TODO'}>
+        <TouchableOpacity onPress={() => this.selectOffice(offices[index])}>
           <Image source={{uri: rowData.picture}} style={styles.image} />
         </TouchableOpacity>
         <Text style={[theme.fonts.h1, styles.title]}>
@@ -102,7 +110,10 @@ class OfficeView extends Component {
   }
 
   render() {
-    console.log('position', this.props.position);
+    var spinner = this.props.loading
+      ? (<ActivityIndicator style={styles.spinner} size='large' color='white'/>)
+      : (<View/>);
+
     // Hide pageIndicator and button for Android because the function
     // 'onChangeVisibleRows' does not work for Android
     let iosView = (Platform.OS === 'ios')
@@ -114,7 +125,7 @@ class OfficeView extends Component {
               text="What's for lunch?"
               buttonStyle={theme.buttons.primary}
               textStyle={theme.fonts.primary}
-              action={() => 'TODO'} />
+              action={() => this.selectOffice(offices[this.props.position])} />
          </View>)
       : (<View/>);
 
@@ -135,6 +146,7 @@ class OfficeView extends Component {
           onChangeVisibleRows={this.onChangeVisibleRows}
         />
         {iosView}
+        {spinner}
       </View>
     );
   }
@@ -181,6 +193,14 @@ const styles = StyleSheet.create({
         paddingBottom: 60
       }
     })
+  },
+  spinner: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: window.width,
+    height: window.height,
+    backgroundColor: theme.colors.spinner
   }
 });
 

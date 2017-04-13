@@ -1,8 +1,8 @@
-import {Platform} from 'react-native';
 import {TabNavigator, StackNavigator} from 'react-navigation';
 import * as theme from '../../utils/theme';
 import OfficeViewContainer from '../office/OfficeViewContainer';
 import AboutViewContainer from '../about/AboutViewContainer';
+import PlaceViewContainer from '../place/PlaceViewContainer';
 
 // TabNavigator is nested inside StackNavigator
 export const MainScreenNavigator = TabNavigator({
@@ -10,18 +10,9 @@ export const MainScreenNavigator = TabNavigator({
   About: {screen: AboutViewContainer}
 },{
   tabBarOptions: {
-    ...Platform.select({
-      android: {
-        activeTintColor: theme.colors.text,
-        indicatorStyle: {backgroundColor: theme.colors.text},
-        style: {backgroundColor: theme.colors.navBar}
-      },
-      ios: {
-        activeTintColor: theme.colors.text,
-        indicatorStyle: {backgroundColor: theme.colors.text},
-        style: {backgroundColor: theme.colors.navBar}
-      }
-    })
+    activeTintColor: theme.colors.text,
+    indicatorStyle: {backgroundColor: theme.colors.text},
+    style: {backgroundColor: theme.colors.navBar}
   }
 });
 
@@ -39,7 +30,7 @@ MainScreenNavigator.navigationOptions = {
 // Root navigator is a StackNavigator
 const AppNavigator = StackNavigator({
   Home: {screen: MainScreenNavigator},
-  InfiniteColorStack: {screen: AboutViewContainer}
+  Place: {screen: PlaceViewContainer}
 });
 
 export default AppNavigator;
