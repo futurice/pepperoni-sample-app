@@ -33,6 +33,19 @@ export function getPlace(city) {
 
 function getRamdonPlace(places) {
   var place = places[Utils.getRamdonNumberBetweenRange(places.length, 0)].venue;
-  console.log('ramdon place: ', place);
   return place;
+}
+
+export function getInfoPlace(location, typeResponse) {
+  var url = 'https://api.foursquare.com/v2/venues/' +
+    location.id +
+    '?v=' + Utils.getTodayFormatted() +
+    '&client_id=' + CLIENT_ID +
+    '&client_secret=' + CLIENT_SECRET;
+
+  return fetch(url)
+    .then(response => response.json())
+    .then(jsonData => jsonData.response.venue)
+    .then((venue) => ({type: typeResponse, payload: venue}))
+    .catch((error) => ({type: RESPONSE_FAILURE, payload: error.message}));
 }
