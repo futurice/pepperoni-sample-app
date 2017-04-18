@@ -2,6 +2,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import PlaceView from './PlaceView';
 import {NavigationActions} from 'react-navigation';
+import * as OfficeStateActions from '../office/OfficeState';
 
 export default connect(
   state => ({
@@ -11,7 +12,8 @@ export default connect(
   }),
    dispatch => {
      return {
-       navigate: bindActionCreators(NavigationActions.navigate, dispatch)
+       navigate: bindActionCreators(NavigationActions.navigate, dispatch),
+       officeStateActions: bindActionCreators(OfficeStateActions, dispatch)
      };
    }
 )(PlaceView);

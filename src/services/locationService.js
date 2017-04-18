@@ -2,7 +2,8 @@ import * as env from '../../env';
 import * as Utils from '../utils/utils';
 import {
   RESPONSE_FAILURE,
-  RESPONSE_OFFICE_PLACE
+  RESPONSE_OFFICE_PLACE,
+  RESPONSE_SUCCESS_RETRY_PLACE
 } from '../modules/office/OfficeState';
 
 const CLIENT_ID = env.SERVICE_CLIENT_ID;
@@ -48,4 +49,12 @@ export function getInfoPlace(location, typeResponse) {
     .then(jsonData => jsonData.response.venue)
     .then((venue) => ({type: typeResponse, payload: venue}))
     .catch((error) => ({type: RESPONSE_FAILURE, payload: error.message}));
+}
+
+export function getAnotherPlace(city, oldPlace) {
+  var newPlace = oldPlace;
+  while (newPlace.name === oldPlace.name) {
+    newPlace = getRamdonPlace(venues);
+  }
+  return getInfoPlace(newPlace, RESPONSE_SUCCESS_RETRY_PLACE);
 }

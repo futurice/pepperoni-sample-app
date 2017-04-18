@@ -32,8 +32,15 @@ class PlaceView extends Component {
     office: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
     place: PropTypes.object.isRequired,
-    navigate: PropTypes.func.isRequired
+    navigate: PropTypes.func.isRequired,
+    officeStateActions: PropTypes.shape({
+      retryPlace: PropTypes.func.isRequired
+    }).isRequired
   };
+
+  onNextPress = () => {
+    this.props.officeStateActions.retryPlace(this.props.office, this.props.place);
+  }
 
   buildPhotosURL = () => {
     var size = this.props.place.photos.groups[0].items.length;
@@ -125,35 +132,42 @@ class PlaceView extends Component {
     return (
       <View style={styles.container}>
         <ScrollView>
-        {this.getImage()}
-        <View style={styles.cardInfo}>
-          <Text numberOfLines={2} style={styles.title}>
-            {this.props.place.name}
-          </Text>
-          <Text style={[styles.text, {fontWeight: '500'}]}>
-            {this.getCategories()}
-          </Text>
-          <Text style={[styles.text, {fontWeight: '500', marginBottom: 10}]}>
-            {this.getPrice()}
-          </Text>
-          <Text numberOfLines={2} style={styles.text}>
-            {this.getAddress()}
-          </Text>
-          <Text style={styles.text}>
-            {this.getHours()}
-          </Text>
-          <Text style={styles.text}>
-            {this.getContact()}
-          </Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            text='Yeah, take me there!'
-            buttonStyle={theme.buttons.primary}
-            textStyle={theme.fonts.primary}
-            action={() => Linking.openURL(this.getLinkURL())
-              .catch(err => console.error('An error occurred', err))} />
-        </View>
+          {this.getImage()}
+          <View style={styles.cardInfo}>
+            <Text numberOfLines={2} style={styles.title}>
+              {this.props.place.name}
+            </Text>
+            <Text style={[styles.text, {fontWeight: '500'}]}>
+              {this.getCategories()}
+            </Text>
+            <Text style={[styles.text, {fontWeight: '500', marginBottom: 10}]}>
+              {this.getPrice()}
+            </Text>
+            <Text numberOfLines={2} style={styles.text}>
+              {this.getAddress()}
+            </Text>
+            <Text style={styles.text}>
+              {this.getHours()}
+            </Text>
+            <Text style={styles.text}>
+              {this.getContact()}
+            </Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              text='Yeah, take me there!'
+              buttonStyle={theme.buttons.primary}
+              textStyle={theme.fonts.primary}
+              action={() => Linking.openURL(this.getLinkURL())
+                .catch(err => console.error('An error occurred', err))} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              text='Nah, try another one'
+              buttonStyle={theme.buttons.secondary}
+              textStyle={theme.fonts.secondary}
+              action={this.onNextPress} />
+          </View>
         </ScrollView>
         {spinner}
       </View>

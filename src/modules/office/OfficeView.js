@@ -36,6 +36,7 @@ class OfficeView extends Component {
     position: PropTypes.number.isRequired,
     loading: PropTypes.bool.isRequired,
     office: PropTypes.object.isRequired,
+    place: PropTypes.object,
     officeStateActions: PropTypes.shape({
       changePosition: PropTypes.func.isRequired,
       selectOffice: PropTypes.func.isRequired
