@@ -20,6 +20,7 @@ class PlaceView extends Component {
   static displayName = 'PlaceView';
 
   static navigationOptions = {
+    title: 'Place',
     header: {
       tintColor: theme.colors.text,
       style: {
@@ -40,6 +41,28 @@ class PlaceView extends Component {
 
   onNextPress = () => {
     this.props.officeStateActions.retryPlace(this.props.office, this.props.place);
+  }
+
+  getButtons = () => {
+    return (this.props.place.name)
+      ? (<View>
+          <View style={styles.buttonContainer}>
+            <Button
+              text='Yeah, take me there!'
+              buttonStyle={theme.buttons.primary}
+              textStyle={theme.fonts.primary}
+              action={() => Linking.openURL(this.getLinkURL())
+                .catch(err => console.error('An error occurred', err))} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              text='Nah, try another one'
+              buttonStyle={theme.buttons.secondary}
+              textStyle={theme.fonts.secondary}
+              action={this.onNextPress} />
+          </View>
+        </View>)
+      : (<View/>);
   }
 
   buildPhotosURL = () => {
@@ -102,7 +125,7 @@ class PlaceView extends Component {
                 <Text style={styles.ratingTotal}>/ 10</Text>
               </View>
             </Image>)
-      : (<Image style={styles.gradient}source={require('../../../assets/gradient.png')}/>);
+      : (<Image style={styles.gradient} source={require('../../../assets/gradient.png')}/>);
   }
 
   getHours = () => {
@@ -153,21 +176,7 @@ class PlaceView extends Component {
               {this.getContact()}
             </Text>
           </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              text='Yeah, take me there!'
-              buttonStyle={theme.buttons.primary}
-              textStyle={theme.fonts.primary}
-              action={() => Linking.openURL(this.getLinkURL())
-                .catch(err => console.error('An error occurred', err))} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              text='Nah, try another one'
-              buttonStyle={theme.buttons.secondary}
-              textStyle={theme.fonts.secondary}
-              action={this.onNextPress} />
-          </View>
+          {this.getButtons()}
         </ScrollView>
         {spinner}
       </View>
