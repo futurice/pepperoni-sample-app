@@ -12,7 +12,7 @@ export default connect(
   }),
    dispatch => {
      return {
-       navigate: bindActionCreators(NavigationActions.navigate, dispatch),
+       back: bindActionCreators(NavigationActions.back, dispatch),
        officeStateActions: bindActionCreators(OfficeStateActions, dispatch)
      };
    }

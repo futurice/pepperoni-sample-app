@@ -17,7 +17,10 @@ class Button extends Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={this.props.action} style={[theme.buttons.basic, this.props.buttonStyle]}>
+      <TouchableOpacity
+        onPress={this.props.action}
+        style={[theme.buttons.basic, this.props.buttonStyle]}
+        accessibilityLabel={this.props.text.toUpperCase()}>
         <Text style={[theme.fonts.button, this.props.textStyle]}>{this.props.text.toUpperCase()}</Text>
       </TouchableOpacity>
     );

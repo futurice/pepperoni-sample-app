@@ -40,8 +40,7 @@ class OfficeView extends Component {
     officeStateActions: PropTypes.shape({
       changePosition: PropTypes.func.isRequired,
       selectOffice: PropTypes.func.isRequired
-    }).isRequired,
-    navigate: PropTypes.func.isRequired
+    }).isRequired
   };
 
   // Initialize the hardcoded data

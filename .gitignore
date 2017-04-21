@@ -67,5 +67,5 @@ fastlane/screenshots
 
 # React Native bundles
 
-ios/PepperoniAppTemplate/main.jsbundle
-ios/PepperoniAppTemplate/main.jsbundle.meta
+ios/LunchWheel/main.jsbundle
+ios/LunchWheel/main.jsbundle.meta

@@ -2,6 +2,7 @@ import {Map} from 'immutable';
 import {loop, Effects} from 'redux-loop-symbol-ponyfill';
 import {NavigationActions} from 'react-navigation';
 import {getPlace, getInfoPlace, getAnotherPlace} from '../../services/locationService';
+import {Alert} from 'react-native';
 
 // Initial state
 const initialState = Map({
@@ -88,9 +89,8 @@ export default function OfficeStateReducer(state = initialState, action = {}) {
         .set('place', action.payload);
 
     case RESPONSE_FAILURE:
-      return state
-        .set('loading', false)
-        .set('errorMessage', action.payload);
+      Alert.alert('Warning', action.payload);
+      return state.set('loading', false);
 
     default:
       return state;

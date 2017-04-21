@@ -33,36 +33,21 @@ class PlaceView extends Component {
     office: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
     place: PropTypes.object.isRequired,
-    navigate: PropTypes.func.isRequired,
+    back: PropTypes.func.isRequired,
     officeStateActions: PropTypes.shape({
       retryPlace: PropTypes.func.isRequired
     }).isRequired
   };
 
-  onNextPress = () => {
-    this.props.officeStateActions.retryPlace(this.props.office, this.props.place);
+  componentWillMount() {
+    //if this.prop.place doesn't contain the right data go back to home screen
+    if (!this.props.place.name) {
+      this.props.back();
+    }
   }
 
-  getButtons = () => {
-    return (this.props.place.name)
-      ? (<View>
-          <View style={styles.buttonContainer}>
-            <Button
-              text='Yeah, take me there!'
-              buttonStyle={theme.buttons.primary}
-              textStyle={theme.fonts.primary}
-              action={() => Linking.openURL(this.getLinkURL())
-                .catch(err => console.error('An error occurred', err))} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              text='Nah, try another one'
-              buttonStyle={theme.buttons.secondary}
-              textStyle={theme.fonts.secondary}
-              action={this.onNextPress} />
-          </View>
-        </View>)
-      : (<View/>);
+  onNextPress = () => {
+    this.props.officeStateActions.retryPlace(this.props.office, this.props.place);
   }
 
   buildPhotosURL = () => {
@@ -176,7 +161,21 @@ class PlaceView extends Component {
               {this.getContact()}
             </Text>
           </View>
-          {this.getButtons()}
+          <View style={styles.buttonContainer}>
+            <Button
+              text='Yeah, take me there!'
+              buttonStyle={theme.buttons.primary}
+              textStyle={theme.fonts.primary}
+              action={() => Linking.openURL(this.getLinkURL())
+                .catch(err => console.error('An error occurred', err))} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              text='Nah, try another one'
+              buttonStyle={theme.buttons.secondary}
+              textStyle={theme.fonts.secondary}
+              action={this.onNextPress} />
+          </View>
         </ScrollView>
         {spinner}
       </View>
