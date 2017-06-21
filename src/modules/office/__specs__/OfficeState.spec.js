@@ -6,7 +6,7 @@ import * as OfficeStateActions from '../OfficeState';
 describe('OfficeState', () => {
 
   describe('selectOffice', () => {
-    const getValue = state => state.getIn(['office', 'value']);
+    const getValue = state => state.getIn(['office', 'office']);
     // Futirice offices
     const offices = require('../../../data/locations.json');
 

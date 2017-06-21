@@ -7,8 +7,8 @@ import * as OfficeStateActions from '../office/OfficeState';
 export default connect(
   state => ({
     loading: state.getIn(['office', 'loading']),
-    office: state.getIn(['office', 'value']),
-    place: state.getIn(['office', 'place'])
+    place: state.getIn(['office', 'place']),
+    venues: state.getIn(['office', 'venues'])
   }),
    dispatch => {
      return {

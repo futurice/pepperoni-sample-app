@@ -18,7 +18,7 @@ class PageIndicator extends Component {
   render() {
     const {pageCount, selectedIndex, style} = this.props;
     return (
-      <View style={[styles.bullets, style]}>
+      <View style={[styles.bullets].concat([style])}>
         {range(0, pageCount).map((index) =>
           <View
             key={'bullet-' + index}

@@ -10,11 +10,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const tabTitle = 'About Us';
 const tabIcon = 'ios-information-circle';
+
 /**
  * About page
  */
 class AboutView extends Component {
-  static displayName = 'ColorView';
+  static displayName = 'AboutView';
 
   static navigationOptions = {
     title: tabTitle,

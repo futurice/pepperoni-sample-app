@@ -1,25 +1,34 @@
 import {Map} from 'immutable';
 import {loop, Effects} from 'redux-loop-symbol-ponyfill';
 import {NavigationActions} from 'react-navigation';
-import {getPlace, getInfoPlace, getAnotherPlace} from '../../services/locationService';
+import {getVenues, getInfoPlace, getAnotherPlace} from '../../services/locationService';
 import {Alert} from 'react-native';
 
 // Initial state
 const initialState = Map({
   position: 0,
   loading: false,
-  value: {},
-  place: {}
+  office: {},
+  place: {},
+  venues: []
 });
 
 // Actions
+//Select Office
+const OFFICE_REQUEST = 'OFFICE_REQUEST';
+
+//Find a ramdon place from a list of venues
+export const VENUES_RESPONSE = 'VENUES_RESPONSE';
+const PLACE_DETAILS_RESPONSE_SUCCESS = 'PLACE_DETAILS_RESPONSE_SUCCESS';
+
+//Retry a new ramdon place
+const RETRY_PLACE_REQUEST = 'RETRY_PLACE_REQUEST';
+export const RETRY_PLACE_RESPONSE_SUCCESS = 'RETRY_PLACE_RESPONSE_SUCCESS';
+
+//Error
+export const FAILURE_RESPONSE = 'FAILURE_RESPONSE';
+
 const POSITION_CHANGED = 'POSITION_CHANGED';
-const REQUEST_OFFICE = 'REQUEST_OFFICE';
-export const RESPONSE_OFFICE_PLACE = 'RESPONSE_OFFICE_PLACE';
-const RESPONSE_SUCCESS_PLACE_DETAILS = 'RESPONSE_SUCCESS_PLACE_DETAILS';
-export const RESPONSE_FAILURE = 'RESPONSE_FAILURE';
-const REQUEST_RETRY_PLACE = 'REQUEST_RETRY_PLACE';
-export const RESPONSE_SUCCESS_RETRY_PLACE = 'RESPONSE_SUCCESS_RETRY_PLACE';
 
 // Action creators
 export function changePosition(position) {
@@ -31,16 +40,16 @@ export function changePosition(position) {
 
 export function selectOffice(office) {
   return {
-    type: REQUEST_OFFICE,
+    type: OFFICE_REQUEST,
     payload: office
   };
 }
 
-export function retryPlace(office, oldPlace) {
+export function retryPlace(venues, oldPlace) {
   return {
-    type: REQUEST_RETRY_PLACE,
+    type: RETRY_PLACE_REQUEST,
     payload: {
-      office,
+      venues,
       oldPlace
     }
   };
@@ -52,22 +61,22 @@ export default function OfficeStateReducer(state = initialState, action = {}) {
     case POSITION_CHANGED:
       return state.set('position', action.payload);
 
-    case REQUEST_OFFICE:
+    case OFFICE_REQUEST:
       return loop(
         state
           .set('loading', true)
-          .set('value', action.payload), //office
-        Effects.promise(getPlace, action.payload)
+          .set('office', action.payload), //office
+        Effects.promise(getVenues, action.payload)
       );
 
-    case RESPONSE_OFFICE_PLACE:
+    case VENUES_RESPONSE:
       return loop(
         state
-          .set('place', action.payload), //place without details
-        Effects.promise(getInfoPlace, action.payload, RESPONSE_SUCCESS_PLACE_DETAILS)
+          .set('venues', action.payload), //places around the office
+        Effects.promise(getInfoPlace, action.payload, PLACE_DETAILS_RESPONSE_SUCCESS)
       );
 
-    case RESPONSE_SUCCESS_PLACE_DETAILS:
+    case PLACE_DETAILS_RESPONSE_SUCCESS:
       return loop(
         state
           .set('loading', false)
@@ -75,20 +84,20 @@ export default function OfficeStateReducer(state = initialState, action = {}) {
         Effects.constant(NavigationActions.navigate({routeName: 'Place'}))
       );
 
-    case REQUEST_RETRY_PLACE:
+    case RETRY_PLACE_REQUEST:
       return loop(
         state
           .set('loading', true)
-          .set('value', action.payload.office),
-        Effects.promise(getAnotherPlace, action.payload.office, action.payload.oldPlace)
+          .set('venues', action.payload.venues),
+        Effects.promise(getAnotherPlace, action.payload.venues, action.payload.oldPlace)
       );
 
-    case RESPONSE_SUCCESS_RETRY_PLACE:
+    case RETRY_PLACE_RESPONSE_SUCCESS:
       return state
         .set('loading', false)
         .set('place', action.payload);
 
-    case RESPONSE_FAILURE:
+    case FAILURE_RESPONSE:
       Alert.alert('Warning', action.payload);
       return state.set('loading', false);
 

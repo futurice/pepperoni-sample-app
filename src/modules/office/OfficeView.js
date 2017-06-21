@@ -36,6 +36,7 @@ class OfficeView extends Component {
     position: PropTypes.number.isRequired,
     loading: PropTypes.bool.isRequired,
     office: PropTypes.object.isRequired,
+    venues: PropTypes.array,
     place: PropTypes.object,
     officeStateActions: PropTypes.shape({
       changePosition: PropTypes.func.isRequired,
@@ -57,7 +58,6 @@ class OfficeView extends Component {
   }
 
   selectOffice = (office) => {
-    console.log('Selected office: ', office);
     this.props.officeStateActions.selectOffice(office);
   }
 
@@ -65,24 +65,24 @@ class OfficeView extends Component {
     // Show pageIndicator and button for Android on the row because the function
     // 'onChangeVisibleRows' does not work for Android
     let androidView = (Platform.OS === 'android')
-      ? (<View style={styles.buttonsContainer}>
+      ? <View style={styles.buttonsContainer}>
           <PageIndicator pageCount={offices.length}
-            selectedIndex={+index}
+            selectedIndex={parseInt(index)}
             style={styles.pageIndicator} />
           <Button
-              text="What's for lunch?"
+              text="WHAT'S FOR LUNCH?"
               buttonStyle={theme.buttons.primary}
               textStyle={theme.fonts.primary}
               action={() => this.selectOffice(offices[index])} />
-        </View>)
-      : (<View/>);
+        </View>
+      : null;
 
     return (
       <View style={styles.cityCard}>
         <TouchableOpacity onPress={() => this.selectOffice(offices[index])}>
           <Image source={{uri: rowData.picture}} style={styles.image} />
         </TouchableOpacity>
-        <Text style={[theme.fonts.h1, styles.title]}>
+        <Text style={[theme.fonts.h1].concat(styles.title)}>
           {rowData.city.toUpperCase()}
         </Text>
         {androidView}
@@ -110,24 +110,24 @@ class OfficeView extends Component {
   }
 
   render() {
-    var spinner = this.props.loading
-      ? (<ActivityIndicator style={styles.spinner} size='large' color='white'/>)
-      : (<View/>);
+    const spinner = this.props.loading
+      ? <ActivityIndicator style={styles.spinner} size='large' color='white'/>
+      : null;
 
     // Hide pageIndicator and button for Android because the function
     // 'onChangeVisibleRows' does not work for Android
     let iosView = (Platform.OS === 'ios')
-      ? (<View style={styles.buttonsContainer}>
+      ? <View style={styles.buttonsContainer}>
           <PageIndicator pageCount={offices.length}
             selectedIndex={this.props.position}
             style={styles.pageIndicator} />
           <Button
-              text="What's for lunch?"
+              text="WHAT'S FOR LUNCH?"
               buttonStyle={theme.buttons.primary}
               textStyle={theme.fonts.primary}
               action={() => this.selectOffice(offices[this.props.position])} />
-         </View>)
-      : (<View/>);
+         </View>
+      : null;
 
     return (
       <View style={styles.container}>

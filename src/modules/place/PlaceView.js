@@ -11,8 +11,8 @@ import {
   Linking
 } from 'react-native';
 import * as theme from '../../utils/theme';
-import * as Utils from '../../utils/utils';
 import Button from '../../components/Button';
+import {repeat, _} from 'lodash';
 
 const window = Dimensions.get('window');
 
@@ -30,9 +30,9 @@ class PlaceView extends Component {
   }
 
   static propTypes = {
-    office: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
     place: PropTypes.object.isRequired,
+    venues: PropTypes.array.isRequired,
     back: PropTypes.func.isRequired,
     officeStateActions: PropTypes.shape({
       retryPlace: PropTypes.func.isRequired
@@ -47,95 +47,78 @@ class PlaceView extends Component {
   }
 
   onNextPress = () => {
-    this.props.officeStateActions.retryPlace(this.props.office, this.props.place);
+    this.props.officeStateActions.retryPlace(this.props.venues, this.props.place);
   }
 
   buildPhotosURL = () => {
+    // At this point we have checked that the array contains photos
     var size = this.props.place.photos.groups[0].items.length;
-    var photo = this.props.place.photos.groups[0].items[Utils.getRamdonNumberBetweenRange(size, 0)];
+    var photo = this.props.place.photos.groups[0].items[_.random(0, size - 1)];
     return (photo.prefix + '500x500' + photo.suffix);
   }
 
   getImage = () => {
-    return (this.props.place.photos && this.props.place.photos.count && this.props.place.photos.count > 0)
-      ? (<Image style={styles.image} source={{uri: this.buildPhotosURL()}}>{this.getRating()}</Image>)
-      : (<View style={styles.noImage}>{this.getRating()}</View>);
+    if (this.props.place.photos && this.props.place.photos.count && this.props.place.photos.count > 0) {
+      return <Image style={styles.image} source={{uri: this.buildPhotosURL()}}>{this.getRating()}</Image>;
+    } else {
+      return <View style={styles.noImage}>{this.getRating()}</View>;
+    }
   }
 
   getPrice = () => {
-    var price = '';
-    if (this.props.place.price) {
-      for (let i = 0; i < this.props.place.price.tier; i++) {
-        price += this.props.place.price.currency;
-      }
-    }
-    return price;
+    const price = this.props.place.price;
+    return price ? repeat(price.currency, price.tier) : '';
   }
 
   getCategories = () => {
-    var categories = '';
-    if (this.props.place.categories) {
-      for (let i = 0; i < this.props.place.categories.length; i++) {
-        categories += this.props.place.categories[i].name + ', ';
-      }
-    }
-    return categories.slice(0, -2);
+    const categories = this.props.place.categories || [];
+    const categoryNames = _.map(categories, 'name');
+    return _.join(categoryNames, ', ');
   }
 
   getAddress = () => {
-    var address = '';
-    if (this.props.place.location) {
-      address = (this.props.place.location.address)
-      ? this.props.place.location.address + ' '
+    return (this.props.place.location)
+      ? _.join(_.compact([this.props.place.location.address, this.props.place.location.postalCode]), ', ')
       : '';
-      address += (this.props.place.location.postalCode)
-      ? this.props.place.location.postalCode
-      : '';
-    }
-    return address;
   }
 
   getRatingStyles = () => {
     return (this.props.place.ratingColor)
-    ? ({backgroundColor: '#' + this.props.place.ratingColor})
+    ? {backgroundColor: '#' + this.props.place.ratingColor}
     : '';
   }
 
   getRating = () => {
     return (this.props.place.rating)
-      ? (<Image style={styles.gradient}
+      ? <Image style={styles.gradient}
               source={require('../../../assets/gradient.png')}>
-              <View style={[styles.ratingView, this.getRatingStyles()]}>
+              <View style={[styles.ratingView].concat(this.getRatingStyles())}>
                 <Text style={styles.rating}>{this.props.place.rating}</Text>
                 <Text style={styles.ratingTotal}>/ 10</Text>
               </View>
-            </Image>)
-      : (<Image style={styles.gradient} source={require('../../../assets/gradient.png')}/>);
+            </Image>
+      : <Image style={styles.gradient} source={require('../../../assets/gradient.png')}/>;
   }
 
   getHours = () => {
-    return (this.props.place.hours)
-      ? (this.props.place.hours.status)
-      : '';
+    return _.get(this.props.place.hours, 'status', '');
   }
 
   getContact = () => {
-    return (this.props.place.contact)
-      ? (this.props.place.contact.formattedPhone)
-      : '';
+    return _.get(this.props.place.contact, 'formattedPhone', '');
   }
 
   getLinkURL = () => {
-    var url = (Platform.OS === 'android')
+    const url = (Platform.OS === 'android')
       ? 'https://maps.google.com?q='
       : 'http://maps.apple.com/?q=';
     return url + this.props.place.location.lat + ',' + this.props.place.location.lng;
   }
 
   render() {
-    var spinner = this.props.loading
-      ? (<ActivityIndicator style={styles.spinner} size='large' color='white'/>)
-      : (<View/>);
+    const spinner = this.props.loading
+      ? <ActivityIndicator style={styles.spinner} size='large' color='white'/>
+      : null;
 
     return (
       <View style={styles.container}>
@@ -145,10 +128,10 @@ class PlaceView extends Component {
             <Text numberOfLines={2} style={styles.title}>
               {this.props.place.name}
             </Text>
-            <Text style={[styles.text, {fontWeight: '500'}]}>
+            <Text style={[styles.text].concat({fontWeight: '500'})}>
               {this.getCategories()}
             </Text>
-            <Text style={[styles.text, {fontWeight: '500', marginBottom: 10}]}>
+            <Text style={[styles.text].concat({fontWeight: '500', marginBottom: 10})}>
               {this.getPrice()}
             </Text>
             <Text numberOfLines={2} style={styles.text}>
@@ -163,7 +146,7 @@ class PlaceView extends Component {
           </View>
           <View style={styles.buttonContainer}>
             <Button
-              text='Yeah, take me there!'
+              text='YEAH, TAKE ME THERE!'
               buttonStyle={theme.buttons.primary}
               textStyle={theme.fonts.primary}
               action={() => Linking.openURL(this.getLinkURL())
@@ -171,7 +154,7 @@ class PlaceView extends Component {
           </View>
           <View style={styles.buttonContainer}>
             <Button
-              text='Nah, try another one'
+              text='NAH, TRY ANOTHER ONE'
               buttonStyle={theme.buttons.secondary}
               textStyle={theme.fonts.secondary}
               action={this.onNextPress} />

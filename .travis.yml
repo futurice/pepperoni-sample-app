@@ -58,7 +58,6 @@ matrix:
         - travis_retry gem install xcpretty
         - travis_retry yarn
       xcode_project: ios/LunchWheel.xcodeproj
-      xcode_scheme: ios/LunchWheelTests
       script:
         - cp env.example.js env.js
         - cd ios

@@ -7,7 +7,8 @@ export default connect(
   state => ({
     position: state.getIn(['office', 'position']),
     loading: state.getIn(['office', 'loading']),
-    office: state.getIn(['office', 'value']),
+    office: state.getIn(['office', 'office']),
+    venues: state.getIn(['office', 'venues']),
     place: state.getIn(['office', 'place'])
   }),
   dispatch => {
